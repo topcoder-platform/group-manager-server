@@ -42,7 +42,8 @@ The following parameters can be set in config files or in env variables:
 ## Local Deployment
 
 - Install dependencies `npm install`
-- Start app `npm start`
+- Start app in dev mode `npm run dev` - it would use [Nodemon](https://nodemon.io/), and restart the app on every code change.
+- Or start app in prod mode `npm start`
 - App will be running at `http://localhost:3000`
 
 
