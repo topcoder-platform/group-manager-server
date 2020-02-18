@@ -1,0 +1,137 @@
+version: 2
+
+#####################################################
+#               Common Configuration                #
+#####################################################
+install_awscli: &install_awscli
+  name: "Install awscli"
+  command: |
+    sudo apt update
+    sudo apt install curl
+    sudo apt install python-pip -y
+    sudo pip install awscli --upgrade
+
+install_dependency_client: &install_dependency_client
+          name: Installation of build and deployment dependencies.
+          command: |
+            sudo apt update
+            sudo apt install curl
+            sudo apt install python-dev python-pip -y
+            sudo pip install awscli --upgrade   
+
+install_deploysuite: &install_deploysuite
+  name: Installation of install_deploysuite.
+  command: |
+    git clone --branch v1.4.1 https://github.com/topcoder-platform/tc-deploy-scripts ../buildscript
+    cp ./../buildscript/master_deploy.sh .
+    cp ./../buildscript/buildenv.sh .
+    cp ./../buildscript/awsconfiguration.sh .
+
+#######################################################
+#                  Server Build                       #
+#######################################################
+
+#Build the Development server 
+build_steps_server: &build_steps_server
+  - checkout
+  - run: *install_awscli
+  - run: *install_deploysuite
+  - setup_remote_docker
+  - restore_cache:
+      key: test-node-modules-{{ checksum "package.json" }}
+  - run: npm install
+  - save_cache:
+      key: test-node-modules-{{ checksum "package.json" }}
+      paths:
+        - node_modules
+  - persist_to_workspace:
+      root: .
+      paths:
+        - node_modules
+
+#Deploy the Development Server 
+deploy_steps_server: &deploy_steps_server
+  - checkout
+  - attach_workspace:
+      at: ./workspace
+  - run: *install_awscli
+  - run: *install_deploysuite
+  - setup_remote_docker
+  - run: docker build -t ${APPNAME}:latest .
+  - deploy:
+      name: "Running Masterscript -  deploy group-manager-server"
+      command: |
+        ./awsconfiguration.sh $DEPLOY_ENV
+        source awsenvconf
+        ./buildenv.sh -e $DEPLOY_ENV -b ${LOGICAL_ENV}-${APPNAME}-deployvar
+        source buildenvvar
+        ./master_deploy.sh -d ECS -e $DEPLOY_ENV -t latest -s ${LOGICAL_ENV}-global-appvar,${LOGICAL_ENV}-${APPNAME}-appvar -i ${APPNAME}
+
+jobs:
+  buildDev_Server:
+    docker:
+      - image: circleci/node:8.9.4
+    environment:
+      DEPLOY_ENV: "DEV"
+      LOGICAL_ENV: "dev"
+      APPNAME: "group-manager"
+    steps: *build_steps_server
+
+  buildProd_Server:
+    docker:
+      - image: circleci/node:8.9.4
+    environment:
+      DEPLOY_ENV: "PROD"
+      LOGICAL_ENV: "prod"
+      APPNAME: "group-manager"
+    steps: *build_steps_server
+
+  deployDev_Server:
+    docker:
+      - image: circleci/python:2.7-stretch-browsers
+    environment:
+      DEPLOY_ENV: "DEV"
+      LOGICAL_ENV: "dev"
+      APPNAME: "group-manager"
+    steps: *deploy_steps_server
+
+  deployProd_Server:
+    docker:
+      - image: circleci/python:2.7-stretch-browsers
+    environment:
+      DEPLOY_ENV: "PROD"
+      LOGICAL_ENV: "prod"
+      APPNAME: "group-manager"
+    steps: *deploy_steps_server   
+
+workflows:
+  version: 2
+  build:
+    jobs:                   
+      - buildDev_Server:
+          context : org-global
+          filters:
+            branches:
+              only: ['develop']  
+      
+      - deployDev_Server:
+          context : org-global
+          requires:
+            - buildDev_Server
+          filters:
+            branches:
+              only: ['develop']
+                    
+      - buildProd_Server:
+          context : org-global
+          filters:
+            branches:
+              only: ['master']      
+      
+      - deployProd_Server:
+          context : org-global
+          requires:
+            - buildProd_Server
+          filters:
+            branches:
+              only: ['master']
