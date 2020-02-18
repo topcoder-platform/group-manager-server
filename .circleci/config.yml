@@ -110,6 +110,10 @@ workflows:
     jobs:                   
       - buildDev_Server:
           context : org-global
+          filters:
+            branches:
+              only: ['develop']  
+      
       - deployDev_Server:
           context : org-global
           requires:
@@ -120,6 +124,10 @@ workflows:
                     
       - buildProd_Server:
           context : org-global
+          filters:
+            branches:
+              only: ['master']      
+      
       - deployProd_Server:
           context : org-global
           requires:
