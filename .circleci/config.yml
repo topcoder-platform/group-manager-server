@@ -77,6 +77,15 @@ jobs:
       APPNAME: "group-manager"
     steps: *build_steps_server
 
+  buildProd_Server:
+    docker:
+      - image: circleci/node:8.9.4
+    environment:
+      DEPLOY_ENV: "PROD"
+      LOGICAL_ENV: "prod"
+      APPNAME: "group-manager"
+    steps: *build_steps_server
+
   deployDev_Server:
     docker:
       - image: circleci/python:2.7-stretch-browsers
@@ -85,6 +94,15 @@ jobs:
       LOGICAL_ENV: "dev"
       APPNAME: "group-manager"
     steps: *deploy_steps_server
+
+  deployProd_Server:
+    docker:
+      - image: circleci/python:2.7-stretch-browsers
+    environment:
+      DEPLOY_ENV: "PROD"
+      LOGICAL_ENV: "prod"
+      APPNAME: "group-manager"
+    steps: *deploy_steps_server   
 
 workflows:
   version: 2
@@ -100,3 +118,12 @@ workflows:
             branches:
               only: ['develop']
                     
+      - buildProd_Server:
+          context : org-global
+      - deployProd_Server:
+          context : org-global
+          requires:
+            - buildProd_Server
+          filters:
+            branches:
+              only: ['master']
