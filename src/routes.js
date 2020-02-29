@@ -56,7 +56,7 @@ module.exports = {
     '/health': {
       get: {
         controller: 'HealthController',
-        method: 'checkHealth'
+        method: 'basicHealth'
       }
     },
     '/basicHealth': {
