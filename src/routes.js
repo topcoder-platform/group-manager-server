@@ -22,12 +22,12 @@ module.exports = {
         auth: 'jwt',
         access: [constants.UserRoles.Admin, constants.UserRoles.GroupManager]
       },
-      post: {
+      /*post: {
         controller: 'GroupShimController',
         method: 'createGroup',
         auth: 'jwt',
         access: [constants.UserRoles.Admin, constants.UserRoles.GroupManager]
-      }
+      }*/
     },
     '/groups/:groupId/members': {
       get: {
