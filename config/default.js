@@ -17,7 +17,7 @@ module.exports = {
   TOKEN_CACHE_TIME: 86400000,
 
 
-  DEFAULT_TIMEOUT: 30000,
+  DEFAULT_TIMEOUT: 45000,
 
   MEMBER_API_URL: "https://api.topcoder-dev.com/v3/users",
   MEMBER_SERVICE_TIMEOUT: 60000,
