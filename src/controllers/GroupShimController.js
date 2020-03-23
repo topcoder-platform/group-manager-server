@@ -129,7 +129,7 @@ async function addDefaultMembers(group, parentGroupId, userId) {
 async function updateGroup (req, res) {
   logger.debug(`ENTER GroupShimController.updateGroup...${JSON.stringify(req.body)}`);
   
-  const group = {name: req.body.name, description: req.body.description};
+  const group = groupValidationService.createGroup(req.body);
   groupValidationService.validateGroup(req.authUser, group);
   let parentGroup = groupValidationService.isParentGroupExists(req.body);
 
