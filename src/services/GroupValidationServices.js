@@ -42,8 +42,8 @@ function createGroup(requestBody) {
     // Create Group Object
     if (requestBody) {
         return {
-            name: requestBody.name, 
-            description: requestBody.description
+            name: _.trim(requestBody.name), 
+            description: _.trim(requestBody.description)
         };
     }
 }
