@@ -67,11 +67,10 @@ async function getUsersByHandleOrEmail(handleOrEmail, groupUsers) {
         return Promise.resolve(groupUsers);
     }
     logger.debug(`[${notFoundInLooker.length}] looker misses - Values ${JSON.stringify(notFoundInLooker)}`);
+    //await queryMemberService(handleOrEmail, notFoundInLooker);
     */
-   
-    // Step 3. Load Users from Member Service
-    // Last and final try
-    await queryMemberService(handleOrEmail, notFoundInLooker);
+
+    await queryMemberService(handleOrEmail, groupUsers);
     let notFoundAtAll = await findUsersInCache(handleOrEmail, groupUsers);
 
     logger.debug(`[${notFoundAtAll.length}] member service misses - Values ${JSON.stringify(notFoundAtAll)}`);
