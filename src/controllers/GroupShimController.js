@@ -252,7 +252,8 @@ async function getGroupMembers (req, res) {
     for(let i = 0; i < groupMemberArray.length; i++) {
        let currentGroupMember = groupMemberArray[i];
        if (!currentGroupMember.isValid) {
-         continue;
+        groupValidationService.removeAttributesForInvalidGroupMember(currentGroupMember, identifier); 
+        continue;
        }
        try {
           let result = await callAddGroupMemberApi(groupId, currentGroupMember["user.coder_id"]);
