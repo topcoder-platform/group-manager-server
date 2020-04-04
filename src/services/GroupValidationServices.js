@@ -110,7 +110,7 @@ function validateAllGroupMembers(groupMemberArr) {
         if(!isUserIdPresent(groupMember)) {
             groupMember.isValid = false;
             groupMember.resolved = true;
-            groupMember.message = 'User not found. Please recheck';
+            groupMember.message = 'User not found. Please check the email and ensure user has registered on platform.';
             return;
         }
         
@@ -153,7 +153,13 @@ function isValidGroupMember(groupMember) {
     return isValidEmailToAdd(email);
 }
 
-function isValidEmailToAdd(email) {
+function isValidEmailToAdd(emailInput) {
+    let email = emailInput;
+    
+    if(email) {
+        email = email.toLowerCase();
+    }
+
     if (email.endsWith("@wipro.com")) {
         return true;
     }
