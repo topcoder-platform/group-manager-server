@@ -112,7 +112,24 @@ function flattenGroupResult(allGroups) {
    let masterList = [];
    extractChildGroups(masterList, allGroups);
    masterList.pop(); //Remove the Wipro All Parent Id, we dont need to show it
+
+   removeNotUsedAttributes(masterList);
    return masterList;
+}
+/**
+ * We are not using couple of attributes on UI
+ * Lets get rid of them to lighten the load
+ */
+function removeNotUsedAttributes(masterList) {
+   var unusedAttributes = ["updatedBy","createdBy","ssoId","status","privateGroup",
+                           "domain","selfRegister"];
+
+   _.forEach(masterList, function(group) {
+      _.forEach(unusedAttributes, function(attribute){
+         delete group[attribute];
+      });
+   })
+   
 }
 
 function extractChildGroups(masterList, parentGroup) {
