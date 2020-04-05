@@ -98,6 +98,22 @@ function validateAllChildGroups(groupMemberArr) {
     })
 }
 
+//The identifier is provided by the client, hence we cannot remove it
+//else the client will not be able identify 
+function removeAttributesForInvalidGroupMember(groupMember, inputIdentifier) {
+    let attributeArr = ["user.status","user.first_name","user.last_name","user.coder_id"];
+    if (inputIdentifier) {
+        identifier = inputIdentifier.toLowerCase();
+        identifier = (identifier == "email" ? "user.handle" : "user.email");
+
+        attributeArr.push(identifier);
+    }
+
+    _.forEach(attributeArr, function(attr){
+        delete groupMember[attr];
+    })
+}
+
 /**
  * Validate all group member sent for addition to the group 
  * a) Handle / email exist
@@ -110,7 +126,7 @@ function validateAllGroupMembers(groupMemberArr) {
         if(!isUserIdPresent(groupMember)) {
             groupMember.isValid = false;
             groupMember.resolved = true;
-            groupMember.message = 'User not found. Please recheck';
+            groupMember.message = 'User not found. Please check the email and ensure user has registered on platform.';
             return;
         }
         
@@ -153,7 +169,13 @@ function isValidGroupMember(groupMember) {
     return isValidEmailToAdd(email);
 }
 
-function isValidEmailToAdd(email) {
+function isValidEmailToAdd(emailInput) {
+    let email = emailInput;
+    
+    if(email) {
+        email = email.toLowerCase();
+    }
+
     if (email.endsWith("@wipro.com")) {
         return true;
     }
@@ -175,5 +197,6 @@ module.exports = {
     isValidGroupMember,
     validateWiproGroup,
     validateAllGroupMembers,
-    isParentGroupExists
+    isParentGroupExists,
+    removeAttributesForInvalidGroupMember
 }
