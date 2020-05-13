@@ -39,5 +39,5 @@ module.exports = {
 
   LOOKER_SERVICE_TIMEOUT: 60000,
   DB_MASTER_URL : '',
-  AUDIT_REQUESTS: 'true'
+  AUDIT_REQUESTS: 'false'
 }
