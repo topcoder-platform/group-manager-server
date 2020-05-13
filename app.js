@@ -8,6 +8,7 @@ const bodyParser = require('body-parser')
 const _ = require('lodash')
 const cors = require('cors')
 const logger = require('./src/common/logger')
+const dbLogger = require('./src/common/dbLogger');
 const HttpStatus = require('http-status-codes')
 const morgan = require('morgan')
 
@@ -21,6 +22,11 @@ app.set('port', config.PORT)
 
 // Request logger
 app.use(morgan('common', { skip: (req, res) => res.statusCode < 400 }))
+
+// If the requests need to be logged in db
+if (config.AUDIT_REQUESTS == "true") {
+  app.use(dbLogger())
+}
 
 // Register routes
 require('./app-routes')(app)
