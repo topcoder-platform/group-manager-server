@@ -1,4 +1,6 @@
 const requestIp = require('request-ip');
+const _ = require('lodash')
+
 const db = require('./../models');
 
 function dbLogger() {
@@ -30,8 +32,9 @@ function dbLogger() {
             const { statusCode } = res;
 
             // Dont audit for health check endpoints
-            if (url == "/basicHealth" || url == "/health") {
-                return;
+            if (url) {
+                if(_.endsWith(url, "/basicHealth")) return;
+                if(_.endsWith(url, "/health")) return;
             }
 
             let auditRecord = {
