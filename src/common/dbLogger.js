@@ -31,11 +31,9 @@ function dbLogger() {
             const {method, originalUrl, url, authUser } = req;
             const { statusCode } = res;
 
-            // Dont audit for health check endpoints
-            if (url) {
-                if(_.endsWith(url, "/basicHealth")) return;
-                if(_.endsWith(url, "/health")) return;
-            }
+            console.log("************************");
+            console.log(url);
+           
 
             let auditRecord = {
                 http_method: method,
@@ -58,8 +56,14 @@ function dbLogger() {
 
             cleanup();
 
+             // Dont audit for health check endpoints
+             if (url) {
+                if(_.endsWith(url, "/basicHealth")) return;
+                if(_.endsWith(url, "/health")) return;
 
-            db.Audit.create(auditRecord);
+                db.Audit.create(auditRecord);
+            }
+            
         }
         next();
     }
