@@ -28,12 +28,8 @@ function dbLogger() {
         res.on("finish", finish);
  
         const logRequest = serverEvent => {
-            const {method, originalUrl, url, authUser } = req;
+            const {method, originalUrl,authUser } = req;
             const { statusCode } = res;
-
-            console.log("************************");
-            console.log(url);
-           
 
             let auditRecord = {
                 http_method: method,
@@ -57,9 +53,9 @@ function dbLogger() {
             cleanup();
 
              // Dont audit for health check endpoints
-             if (url) {
-                if(_.endsWith(url, "/basicHealth")) return;
-                if(_.endsWith(url, "/health")) return;
+             if (originalUrl) {
+                if(_.endsWith(originalUrl.toLowerCase(), "/basichealth")) return;
+                if(_.endsWith(originalUrl.toLowerCase(), "/health")) return;
 
                 db.Audit.create(auditRecord);
             }
