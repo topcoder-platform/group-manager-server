@@ -26,9 +26,14 @@ function dbLogger() {
         res.on("finish", finish);
  
         const logRequest = serverEvent => {
-            const {method, originalUrl, authUser } = req;
+            const {method, originalUrl, url, authUser } = req;
             const { statusCode } = res;
-            
+
+            // Dont audit for health check endpoints
+            if (url == "/basicHealth" || url == "/health") {
+                return;
+            }
+
             let auditRecord = {
                 http_method: method,
                 url: originalUrl,
@@ -49,6 +54,8 @@ function dbLogger() {
             auditRecord.response_time = extractMilliseconds(hrstart);    
 
             cleanup();
+
+
             db.Audit.create(auditRecord);
         }
         next();
