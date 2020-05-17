@@ -37,5 +37,7 @@ module.exports = {
     User: 'user'
   },
 
-  LOOKER_SERVICE_TIMEOUT: 60000
+  LOOKER_SERVICE_TIMEOUT: 60000,
+  DB_MASTER_URL : '',
+  AUDIT_REQUESTS: 'false'
 }
