@@ -48,7 +48,7 @@ async function getAllGroups(criteria) {
       })
   }
   catch(e) {
-    handleHttpError(e);
+    handleHttpError(e.response);
   }
   return getAllGroupsResponse.data;
 }
@@ -81,7 +81,7 @@ async function createGroup (groupBody) {
     });
   }
   catch(e) {
-    handleHttpError(e);
+    handleHttpError(e.response);
   }
 
   if (groupCreateResponse && groupCreateResponse.data) {
@@ -113,7 +113,7 @@ async function updateGroup (groupId, groupBody) {
     });
   }
   catch(e) {
-    handleHttpError(e);
+    handleHttpError(e.response);
   }
   if (result && result.data) {
     return result.data;
@@ -152,7 +152,7 @@ async function addGroupMember (groupId, groupBody) {
     });
   }
   catch(e) {
-    handleHttpError(e);
+    handleHttpError(e.response);
   }
   if (result && result.data) {
     return result.data;
@@ -182,7 +182,7 @@ async function deleteGroupMember (groupId, memberId) {
     });
   }
   catch(e) {
-    handleHttpError(e);
+    handleHttpError(e.response);
   }
   if (result && result.data) {
     return result.data;
@@ -223,7 +223,7 @@ async function getGroupMembers (groupId, page) {
     });
   }
   catch(e) {
-    handleHttpError(e);
+    handleHttpError(e.response);
     return null;
   }
 
