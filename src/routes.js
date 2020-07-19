@@ -53,6 +53,20 @@ module.exports = {
         access: [constants.UserRoles.Admin, constants.UserRoles.GroupManager]
       }
     },
+    '/batches': {
+      get: {
+        controller: 'BatchController',
+        method: 'getAllBatches',
+        auth: 'jwt',
+        access: [constants.UserRoles.Admin, constants.UserRoles.GroupManager]
+      },
+      post: {
+        controller: 'BatchController',
+        method: 'createBatch',
+        auth: 'jwt',
+        access: [constants.UserRoles.Admin, constants.UserRoles.GroupManager]
+      }
+    },
     '/health': {
       get: {
         controller: 'HealthController',

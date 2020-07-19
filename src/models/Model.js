@@ -1,4 +1,4 @@
-const SQL = require('sql-bricks');
+const SQL = require('sql-bricks-postgres');
 const SELECT = SQL.select;
 const INSERT = SQL.insert;
 
@@ -34,8 +34,11 @@ class Model {
                         sql.toParams().values, {raw: true})
     }
 
-    async findAll(tblName) {
-        let sql = SELECT().from(this.createQualifiedTableName(tblName));
+    async findAll(tblName, columns, orderColumns, limitRows) {
+        let sqlBuilder = null;
+        sqlBuilder = columns ? SELECT(columns): SELECT();
+
+        let sql = sqlBuilder.from(this.createQualifiedTableName(tblName)).order(orderColumns).limit(limitRows);
         return await this.conn.query(sql.toString(), {raw: true});
     }
 }
