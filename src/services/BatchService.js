@@ -15,7 +15,7 @@ async function getAllBatches() {
     try {
         return await db.Batch.getAll({
             columns: ["id","status","total","processed","errors","created_at","updated_at"],
-            limit: 10
+            limit: 100
         });
     }
     catch (error) {
@@ -33,7 +33,7 @@ async function createBatch(emails, userId) {
     logger.debug(`Batch Service. Insert one Batch`);
     try {
         let batchRecord = {};
-        batchRecord.status = 'Not Started';
+        batchRecord.status = 'Submitted';
         batchRecord.emails = emails;
         batchRecord.operation = 'Deactivate';
         batchRecord.created_by = userId;

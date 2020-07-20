@@ -16,7 +16,7 @@ class Batch extends Model {
         let limit = option.limit;
 
         orderBy = orderBy ? orderBy : "created_at DESC";
-        limit = limit ? limit : 10;
+        limit = limit ? limit : 100;
 
         return await this.findAll(this.tblName, columns, orderBy, limit);
     }
