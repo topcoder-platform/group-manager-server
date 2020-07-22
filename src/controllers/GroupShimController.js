@@ -137,7 +137,7 @@ async function updateGroup (req, res) {
   //Add the additional parameters required by group service 
   group.privateGroup = true; //This should be true
   group.selfRegister = false; 
-  group.active = true;
+  group.status = "active";
 
   const result = await service.updateGroup(req.params.groupId, group);
 
