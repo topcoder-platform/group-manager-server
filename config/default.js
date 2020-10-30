@@ -22,7 +22,9 @@ module.exports = {
   MEMBER_API_URL: "https://api.topcoder-dev.com/v3/users",
   MEMBER_SERVICE_TIMEOUT: 60000,
 
-  GROUP_API_URL: "https://api.topcoder-dev.com/v5/groups",
+  GROUP_API_URL:   "https://api.topcoder-dev.com/v5/groups",
+  CONNECT_API_URL: "https://api.topcoder-dev.com/v5/projects",
+  CHALLENGE_API_URL: "https://api.topcoder-dev.com/v4/challenges",
 
   // health check timeout in milliseconds
   HEALTH_CHECK_TIMEOUT: 3000,
