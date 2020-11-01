@@ -24,6 +24,34 @@ function handleHttpError(e) {
   throw new errors.BadRequestError(e.message);
 }
 
+async function getGroup(groupId) {
+  logger.debug(`Group Shim Service. Get Group ${groupId}`);
+
+  let token = await utils.getM2MToken();
+  logger.debug(`M2M Token Successful...`);
+
+  const httpClient = utils.getHttpClient();
+
+  const endpoint = `${config.GROUP_API_URL}/${groupId}` ;
+  const headers = utils.getHeaderParam(token);
+
+  logger.debug(`Http call to enpoint ${endpoint}`);
+
+  let groupResponse = null;
+  
+  try {
+    groupResponse = await httpClient.get(endpoint, {
+        headers: headers,
+        timeout: config.DEFAULT_TIMEOUT
+      })
+  }
+  catch(e) {
+    handleHttpError(e.response);
+  }
+  return groupResponse.data;
+  
+}
+
 async function getAllGroups(criteria) {
   logger.debug(`Group Shim Service. Get All Groups ${JSON.stringify(criteria)}`);
 
@@ -287,6 +315,7 @@ async function getGroupMembersCount (groupId) {
 
 module.exports = {
   getAllGroups,
+  getGroup,
   createGroup,
   updateGroup,
   addGroupMember,

@@ -2,6 +2,8 @@ const _ = require('lodash');
 const errors = require('../common/errors');
 const cacheService = require('./CacheService');
 const utils  = require('../common/utils'); 
+const constants = require('../../app-constants');
+
 
 /**
  * Validate the Group name should confirm to the naming convention.
@@ -39,13 +41,50 @@ function validateWiproGroup(wiproGroupId){
  * Create group JSON using the request object of Http
  */
 function createGroup(requestBody) {
+
     // Create Group Object
     if (requestBody) {
-        return {
+        let group = {
             name: _.trim(requestBody.name), 
-            description: _.trim(requestBody.description)
+            description: _.trim(requestBody.description),
         };
+
+        if (requestBody.status) {
+            groupStatus = constants.GroupStatus.Active;
+            if (requestBody.status.toLowerCase() === constants.GroupStatus.InActive.toLowerCase()) {
+                groupStatus = constants.GroupStatus.InActive;
+            }
+            group.status = groupStatus;
+        }
+        return group;
     }
+    return null;
+    
+}
+
+/**
+ * Group api is weird, it needs a full group body, 
+ * fix the weirdness here
+ */
+function mergeGroup(apiGroup, newGroup) {
+    apiGroup.name = newGroup.name;
+    apiGroup.description = newGroup.description;
+    if (newGroup.status) {
+      apiGroup.status = newGroup.status;    
+    }
+    apiGroup = _.omitBy(apiGroup, v => _.isEmpty(v) && _.isString(v));
+
+    let removeAttributes = ['createdBy', 'createdAt', 'id', 'updatedBy', 'updatedAt'];
+
+    _.forEach(removeAttributes, key => {
+        delete apiGroup[key];
+    })
+
+    if (!apiGroup.status) {
+        apiGroup.status = constants.GroupStatus.Active;
+    }
+   
+    return apiGroup;
 }
 
 function isParentGroupExists(group) {
@@ -191,6 +230,7 @@ function isValidEmailToAdd(emailInput) {
 module.exports = {
     validateGroup,
     createGroup,
+    mergeGroup,
     generateGroupMember, 
     filterGroupMembersByType,
     appendUserIdField,
