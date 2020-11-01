@@ -114,14 +114,27 @@ function flattenGroupResult(allGroups) {
    masterList.pop(); //Remove the Wipro All Parent Id, we dont need to show it
 
    removeNotUsedAttributes(masterList);
+   removeInactiveGroups(masterList);
    return masterList;
 }
+
+function removeInactiveGroups(masterList) {
+  //If status is set to Inactive then remove the group from the list
+  _.remove(masterList, 
+      group => isGroupInactive(group));
+}
+
+function isGroupInactive(group) {
+  let groupStatus = _.get(group, "status", constants.GroupStatus.Active);
+  return groupStatus === constants.GroupStatus.InActive;
+}
+
 /**
  * We are not using couple of attributes on UI
  * Lets get rid of them to lighten the load
  */
 function removeNotUsedAttributes(masterList) {
-   var unusedAttributes = ["updatedBy","createdBy","ssoId","status","privateGroup",
+   var unusedAttributes = ["updatedBy","createdBy","ssoId","privateGroup",
                            "domain","selfRegister"];
 
    _.forEach(masterList, function(group) {
