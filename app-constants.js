@@ -12,6 +12,11 @@ const UserRoles = {
     User: 'user'
   }
   
+  const GroupStatus = {
+    Active: 'active',
+    InActive: 'inactive'
+  }
+  
   const EVENT_ORIGINATOR = 'topcoder-groups-shim-api'
   const EVENT_MIME_TYPE = 'application/json'
 
@@ -19,6 +24,7 @@ const UserRoles = {
  
   module.exports = {
     UserRoles,
+    GroupStatus,
     MembershipTypes,
     EVENT_ORIGINATOR,
     EVENT_MIME_TYPE,
