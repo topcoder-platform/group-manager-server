@@ -114,10 +114,13 @@ function flattenGroupResult(allGroups) {
    masterList.pop(); //Remove the Wipro All Parent Id, we dont need to show it
 
    removeNotUsedAttributes(masterList);
-   removeInactiveGroups(masterList);
    return masterList;
 }
 
+/**
+ * If Inactive groups are required for review
+ * @param  masterList 
+ */
 function removeInactiveGroups(masterList) {
   //If status is set to Inactive then remove the group from the list
   _.remove(masterList, 
