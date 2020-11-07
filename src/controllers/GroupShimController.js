@@ -129,16 +129,17 @@ async function addDefaultMembers(group, parentGroupId, userId) {
 async function updateGroup (req, res) {
   logger.debug(`ENTER GroupShimController.updateGroup...${JSON.stringify(req.body)}`);
   
-  const group = groupValidationService.createGroup(req.body);
-  groupValidationService.validateGroup(req.authUser, group);
+  const rawGroup = groupValidationService.createGroup(req.body);
+  groupValidationService.validateGroup(req.authUser, rawGroup);
   let parentGroup = groupValidationService.isParentGroupExists(req.body);
 
-  //TODO: Fix this after 
-  //Add the additional parameters required by group service 
-  group.privateGroup = true; //This should be true
-  group.selfRegister = false; 
+  const unCachedGroup = await service.getGroup(req.params.groupId);
+  logger.debug(`Api Group Response - ${JSON.stringify(unCachedGroup)}`);
 
-  const result = await service.updateGroup(req.params.groupId, group);
+  const mergedGroup = groupValidationService.mergeGroup(unCachedGroup, rawGroup);
+  logger.debug(`Merged Group change with UI Change - ${JSON.stringify(mergedGroup)}`);
+
+  const result = await service.updateGroup(req.params.groupId, mergedGroup);
 
   //If the parent group has been changed, validate both parent groups
   if (parentGroup) {
