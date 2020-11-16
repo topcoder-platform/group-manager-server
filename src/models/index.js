@@ -16,7 +16,7 @@ const db = new Redshift(connConfig);
 const audit = new Audit(db, 'audit');
 const batch = new Batch(db, 'batch');
 const connect = new Connect(db, 'connect');
-const payment = new Payment(db, 'payment');
+const payment = new Payment(db, 'payment_adjustment');
 
 
 db.Audit = audit;
