@@ -67,6 +67,50 @@ module.exports = {
         access: [constants.UserRoles.Admin, constants.UserRoles.GroupManager]
       }
     },
+    '/connect': {
+      get: {
+        controller: 'ConnectController',
+        method: 'getAllProjects',
+        auth: 'jwt',
+        access: [constants.UserRoles.Admin, constants.UserRoles.GroupManager]
+      }
+    },
+    '/connect/:projectId': {
+      get: {
+        controller: 'ConnectController',
+        method: 'getProject',
+        auth: 'jwt',
+        access: [constants.UserRoles.Admin, constants.UserRoles.GroupManager]
+      },
+      post: {
+        controller: 'ConnectController',
+        method: 'submitUpdate',
+        auth: 'jwt',
+        access: [constants.UserRoles.Admin, constants.UserRoles.GroupManager]
+      }
+    },
+    '/payment': {
+      get: {
+        controller: 'PaymentController',
+        method: 'getAllPayments',
+        auth: 'jwt',
+        access: [constants.UserRoles.Admin, constants.UserRoles.GroupManager]
+      }
+    },
+    '/payment/:challengeId': {
+      get: {
+        controller: 'PaymentController',
+        method: 'getChallenge',
+        auth: 'jwt',
+        access: [constants.UserRoles.Admin, constants.UserRoles.GroupManager]
+      },
+      post: {
+        controller: 'PaymentController',
+        method: 'submitUpdate',
+        auth: 'jwt',
+        access: [constants.UserRoles.Admin, constants.UserRoles.GroupManager]
+      }
+    },
     '/health': {
       get: {
         controller: 'HealthController',
