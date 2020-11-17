@@ -54,8 +54,9 @@ async function getProject(projectId) {
     }
     catch(e) {
         handleHttpError(e.response);
+        return null;
     }
-    return connectResponse;
+    return connectResponse.data;
 }
 
   /**
