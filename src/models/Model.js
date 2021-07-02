@@ -34,6 +34,16 @@ class Model {
                         sql.toParams().values, {raw: true})
     }
 
+    async filterAll(tblName, columns, orderColumns, limitRows, whereClause ) {
+        let sqlBuilder = null;
+        sqlBuilder = columns ? SELECT(columns): SELECT();
+
+        let sql = sqlBuilder.from(this.createQualifiedTableName(tblName));
+        sql.where(whereClause).order(orderColumns).limit(limitRows);
+
+        return await this.conn.query(sql.toString(), {raw: true});
+    }
+
     async findAll(tblName, columns, orderColumns, limitRows) {
         let sqlBuilder = null;
         sqlBuilder = columns ? SELECT(columns): SELECT();
