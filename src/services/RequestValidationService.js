@@ -1,7 +1,7 @@
 const _ = require('lodash');
 const logger = require('tc-core-library-js/lib/middleware/logger');
 const errors = require('../common/errors');
-const utils  = require('../common/utils'); 
+const utils = require('../common/utils');
 const Joi = require('joi');
 
 let validRequestTypes = ['extension'];
@@ -15,7 +15,7 @@ function validateRequestType(requestType) {
 }
 
 function validateRequest(requestType, authUser, record) {
-    if(!authUser) {
+    if (!authUser) {
         throw new errors.BadRequestError("Current User is not available");
     }
     if (!requestType) {
@@ -37,7 +37,7 @@ validateExtension.schema = {
             date: Joi.date()
         }),
         name: Joi.string().required().max(255),
-        details: Joi.array().items(Joi.number()),
+        details: Joi.string().max(10000),
     })
 }
 function validateExtension(extension) {

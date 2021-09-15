@@ -13,7 +13,7 @@ async function getAllRequests(requestType) {
     logger.debug(`Request Service. Get All Request => ${requestType}`);
     try {
         return await db.Request.getFiltered({
-            columns: ["id","name","status","total","processed","errors","created_at","updated_at"],
+            columns: ["id", "name", "status", "total", "processed", "errors", "created_at", "updated_at"],
             limit: 100
         }, requestType);
     }
@@ -23,7 +23,7 @@ async function getAllRequests(requestType) {
     }
 }
 
-  
+
 async function createRequest(request_type, userId, inputRequest) {
     logger.debug(`Request Service. Insert one request`);
     try {
@@ -31,7 +31,7 @@ async function createRequest(request_type, userId, inputRequest) {
         request.status = 'Submitted';
         request.name = inputRequest.name;
         request.request_type = request_type;
-        request.details = JSON.stringify(inputRequest.details);
+        request.details = inputRequest.details;
         request.common = JSON.stringify(inputRequest.common);
         request.created_by = userId;
 
@@ -47,5 +47,5 @@ module.exports = {
     getAllRequests,
     createRequest
 }
-  
+
 logger.buildService(module.exports)
