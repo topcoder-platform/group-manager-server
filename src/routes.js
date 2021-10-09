@@ -67,6 +67,20 @@ module.exports = {
         access: [constants.UserRoles.Admin, constants.UserRoles.GroupManager]
       }
     },
+    '/request': {
+      get: {
+        controller: 'RequestController',
+        method: 'getAllRequests',
+        auth: 'jwt',
+        access: [constants.UserRoles.Admin, constants.UserRoles.GroupManager]
+      },
+      post: {
+        controller: 'RequestController',
+        method: 'createRequest',
+        auth: 'jwt',
+        access: [constants.UserRoles.Admin, constants.UserRoles.GroupManager]
+      }
+    },
     '/connect': {
       get: {
         controller: 'ConnectController',
