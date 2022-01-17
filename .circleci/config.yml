@@ -35,7 +35,7 @@ install_deploysuite: &install_deploysuite
 build_steps_server: &build_steps_server
   - checkout
   - run: *install_awscli
-  - run: *install_deploysuite
+  #- run: *install_deploysuite
   - setup_remote_docker
   - restore_cache:
       key: test-node-modules-{{ checksum "package.json" }}
@@ -88,7 +88,7 @@ jobs:
 
   deployDev_Server:
     docker:
-      - image: circleci/python:2.7-stretch-browsers
+      - image: cibuilds/aws
     environment:
       DEPLOY_ENV: "DEV"
       LOGICAL_ENV: "dev"
@@ -97,7 +97,7 @@ jobs:
 
   deployProd_Server:
     docker:
-      - image: circleci/python:2.7-stretch-browsers
+      - image: cibuilds/aws
     environment:
       DEPLOY_ENV: "PROD"
       LOGICAL_ENV: "prod"
