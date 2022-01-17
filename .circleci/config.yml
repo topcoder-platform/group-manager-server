@@ -55,7 +55,7 @@ deploy_steps_server: &deploy_steps_server
   - attach_workspace:
       at: ./workspace
   - run: *install_awscli
-  - run: *install_deploysuite
+  #- run: *install_deploysuite
   - setup_remote_docker
   - run: docker build -t ${APPNAME}:latest .
   - deploy:
