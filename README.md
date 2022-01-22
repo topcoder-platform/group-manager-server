@@ -46,4 +46,4 @@ The following parameters can be set in config files or in env variables:
 - Or start app in prod mode `npm start`
 - App will be running at `http://localhost:3000`
 
-
+-------------------------------------------

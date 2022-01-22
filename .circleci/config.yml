@@ -3,26 +3,12 @@ version: 2
 #####################################################
 #               Common Configuration                #
 #####################################################
-install_awscli: &install_awscli
-  name: "Install awscli"
-  command: |
-    sudo apt update
-    sudo apt install curl
-    sudo apt install python-pip -y
-    sudo pip install awscli --upgrade
 
-install_dependency_client: &install_dependency_client
-          name: Installation of build and deployment dependencies.
-          command: |
-            sudo apt update
-            sudo apt install curl
-            sudo apt install python-dev python-pip -y
-            sudo pip install awscli --upgrade   
 
 install_deploysuite: &install_deploysuite
   name: Installation of install_deploysuite.
   command: |
-    git clone --branch v1.4.1 https://github.com/topcoder-platform/tc-deploy-scripts ../buildscript
+    git clone --branch 1.4.7_beta https://github.com/topcoder-platform/tc-deploy-scripts ../buildscript
     cp ./../buildscript/master_deploy.sh .
     cp ./../buildscript/buildenv.sh .
     cp ./../buildscript/awsconfiguration.sh .
@@ -34,8 +20,8 @@ install_deploysuite: &install_deploysuite
 #Build the Development server 
 build_steps_server: &build_steps_server
   - checkout
-  - run: *install_awscli
-  - run: *install_deploysuite
+  #- run: *install_awscli
+  #- run: *install_deploysuite
   - setup_remote_docker
   - restore_cache:
       key: test-node-modules-{{ checksum "package.json" }}
@@ -54,7 +40,7 @@ deploy_steps_server: &deploy_steps_server
   - checkout
   - attach_workspace:
       at: ./workspace
-  - run: *install_awscli
+  #- run: *install_awscli
   - run: *install_deploysuite
   - setup_remote_docker
   - run: docker build -t ${APPNAME}:latest .
@@ -88,7 +74,7 @@ jobs:
 
   deployDev_Server:
     docker:
-      - image: circleci/python:2.7-stretch-browsers
+      - image: cibuilds/aws
     environment:
       DEPLOY_ENV: "DEV"
       LOGICAL_ENV: "dev"
@@ -97,7 +83,7 @@ jobs:
 
   deployProd_Server:
     docker:
-      - image: circleci/python:2.7-stretch-browsers
+      - image: cibuilds/aws
     environment:
       DEPLOY_ENV: "PROD"
       LOGICAL_ENV: "prod"
