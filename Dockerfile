@@ -1,4 +1,4 @@
-FROM node:8.2.1
+FROM node:8.16
 LABEL version="1.2"
 LABEL description="Groups Manager Service"
 RUN sed -i '/jessie-updates/d' /etc/apt/sources.list
