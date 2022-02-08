@@ -20,7 +20,7 @@ const UserRoles = {
   const EVENT_ORIGINATOR = 'topcoder-groups-shim-api'
   const EVENT_MIME_TYPE = 'application/json'
 
-  const MEMBER_PAGE_SIZE = 100
+  const MEMBER_PAGE_SIZE = 10
  
   module.exports = {
     UserRoles,
