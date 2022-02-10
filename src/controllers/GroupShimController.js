@@ -312,6 +312,64 @@ async function getGroupMembers (req, res) {
   }
   
   /**
+   * Delete batch group member
+   * @param req the request
+   * @param res the response
+   */
+   async function deleteBatchGroupMember (req, res) {
+    let groupArray = req.body;
+    let identifier = req.params.identifier;
+    if (!identifier) {
+      throw new errors.BadRequestError('User Handle or Email or Child Group should be provided');
+    }
+
+    //groupValidationService.validateWiproGroup(req.params.groupId);
+    let groupMemberArray = []
+    groupMemberArray = await deleteGroupMembers(req.params.groupId, identifier, groupArray)
+    
+    logger.debug(`EXIT GroupShimController.addGroupMember`)
+    res.send(groupMemberArray);
+  }
+
+  
+ /**
+   * delete members from Groups using email or handle
+   */
+  async function deleteGroupMembers(groupId, identifier, groupArray) {
+    logger.debug(`ENTER GroupShimController.deleteGroupMembers`)
+    let groupMemberArray = groupValidationService.generateGroupMember(identifier, groupArray);
+
+    logger.debug(`[${groupMemberArray.length}] - Call Cache Service to add details...${JSON.stringify(groupMemberArray)}`);
+    groupMemberArray = await cacheService.getUsersByHandleOrEmail(identifier, groupMemberArray);
+
+    logger.debug(`Group Member Array for creation ${JSON.stringify(groupMemberArray)}`)
+    groupValidationService.validateAllGroupMembers(groupMemberArray);
+
+    logger.debug('Group Member Array validation complete')
+
+    for(let i = 0; i < groupMemberArray.length; i++) {
+       let currentGroupMember = groupMemberArray[i];
+       if (!currentGroupMember.isValid) {
+        groupValidationService.removeAttributesForInvalidGroupMember(currentGroupMember, identifier); 
+        continue;
+       }
+       try {
+          let result = await service.deleteGroupMember(groupId, currentGroupMember["user.coder_id"]);
+          currentGroupMember.response = result;
+        }
+       catch(e) {
+          currentGroupMember.isValid = false;
+          currentGroupMember.response = e;
+          if (e.message) {
+            currentGroupMember.message = e.message;
+          }
+       }   
+    }
+    logger.debug(`EXIT GroupShimController.addUserMembers`)
+    return groupMemberArray;
+  } 
+
+  /**
    * Get group members count
    * @param req the request
    * @param res the response
@@ -329,5 +387,6 @@ module.exports = {
   updateGroup,
   getGroupMembers,
   addGroupMember,
-  deleteGroupMember
+  deleteGroupMember,
+  deleteBatchGroupMember
 }

@@ -20,6 +20,7 @@ module.exports = {
   DEFAULT_TIMEOUT: 45000,
 
   MEMBER_API_URL: "https://api.topcoder-dev.com/v3/users",
+  V5_MEMBER_API_URL: "https://api.topcoder-dev.com/v5/members",
   MEMBER_SERVICE_TIMEOUT: 60000,
 
   GROUP_API_URL:   "https://api.topcoder-dev.com/v5/groups",
