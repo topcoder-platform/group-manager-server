@@ -25,6 +25,7 @@ function validateGroup(authUser, group) {
         throw new errors.BadRequestError('Group Name should start with Wipro - Topgear - prefix');
     }
 }
+
 /**
  * Check if the Wipro belongs to Wipro. The api validation is required to prevent incorrect
  * The groups must be populated in Cache Service for this is work.

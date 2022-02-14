@@ -317,17 +317,21 @@ async function getGroupMembers (req, res) {
    * @param res the response
    */
    async function deleteBatchGroupMember (req, res) {
+    const groupId = req.params.groupId;
+    const identifier = req.params.identifier;
+
+    let groupMemberArray = []
     let groupArray = req.body;
-    let identifier = req.params.identifier;
+
     if (!identifier) {
       throw new errors.BadRequestError('User Handle or Email or Child Group should be provided');
     }
 
-    //groupValidationService.validateWiproGroup(req.params.groupId);
-    let groupMemberArray = []
-    groupMemberArray = await deleteGroupMembers(req.params.groupId, identifier, groupArray)
+    groupValidationService.validateWiproGroup(groupId);
+
+    groupMemberArray = await deleteGroupMembers(groupId, identifier, groupArray);
     
-    logger.debug(`EXIT GroupShimController.addGroupMember`)
+    logger.debug("EXIT GroupShimController deleteBatchGroupMember");
     res.send(groupMemberArray);
   }
 
