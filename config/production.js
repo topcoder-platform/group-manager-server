@@ -7,5 +7,6 @@ module.exports = {
   GROUP_API_URL: "https://api.topcoder.com/v5/groups",
   MEMBER_API_URL: "https://api.topcoder.com/v3/users",
   CONNECT_API_URL: "https://api.topcoder.com/v5/projects",
-  CHALLENGE_API_URL: "https://api.topcoder.com/v4/challenges"
+  CHALLENGE_API_URL: "https://api.topcoder.com/v4/challenges",
+  V5_MEMBER_API_URL: "https://api.topcoder.com/v5/members",
 }
