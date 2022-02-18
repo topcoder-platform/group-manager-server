@@ -369,7 +369,7 @@ async function getGroupMembers (req, res) {
           }
        }   
     }
-    logger.debug(`EXIT GroupShimController.addUserMembers`)
+    logger.debug(`EXIT GroupShimController.removeUserMembers`)
     return groupMemberArray;
   } 
 
