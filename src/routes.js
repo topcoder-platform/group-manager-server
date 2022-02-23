@@ -137,4 +137,12 @@ module.exports = {
         method: 'basicHealth'
       }
     },
+    '/groups/:groupId/batchDeleteMembers/:identifier': {
+      post: {
+        controller: 'GroupShimController',
+        method: 'deleteBatchGroupMember',
+        auth: 'jwt',
+        access: [constants.UserRoles.Admin, constants.UserRoles.GroupManager]
+      }
+    },
   }
