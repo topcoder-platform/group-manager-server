@@ -67,6 +67,21 @@ module.exports = {
         access: [constants.UserRoles.Admin, constants.UserRoles.GroupManager]
       }
     },
+    '/bulkImport': {
+      get: {
+        controller: 'BulkImportController',
+        method: 'getAllBulkImports',
+        auth: 'jwt',
+        access: [constants.UserRoles.Admin, constants.UserRoles.GroupManager]
+      },
+      post: {
+        controller: 'BulkImportController',
+        method: 'createBulkImport',
+        auth: 'jwt',
+        access: [constants.UserRoles.Admin, constants.UserRoles.GroupManager]
+      }
+    },
+
     '/request': {
       get: {
         controller: 'RequestController',
