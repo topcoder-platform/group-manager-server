@@ -14,7 +14,7 @@ async function getAllBulkImports() {
     try {
         return await db.BulkImport.getAll({
             columns: ["id","name","file_path","status","total","processed","error","message",
-                "created_at","updated_at"],
+                "created_at","updated_at", "created_by"],
             limit: 100
         });
     }
