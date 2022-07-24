@@ -26,16 +26,17 @@ async function getAllBulkImports() {
 
 createBulkImport.schema = {
     name: Joi.string().required().max(255),
+    location: Joi.string().required().max(2048),
     userId: Joi.number().integer().required()
 }
   
-async function createBulkImport(name, userId) {
+async function createBulkImport(name, location, userId) {
     logger.debug(`Bulk Import Service. Insert one Import record`);
     try {
         let importRecord = {};
         importRecord.status = 'Submitted';
         importRecord.name = name;
-        importRecord.file_path = 'Not provided';
+        importRecord.file_path = location;
         importRecord.created_by = userId;
         
         return await db.BulkImport.create(importRecord);
