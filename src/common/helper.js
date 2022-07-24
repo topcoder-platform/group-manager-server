@@ -4,6 +4,7 @@
 
 const _ = require('lodash');
 const config = require('config');
+
 const constants = require('../../app-constants');
 
 
@@ -171,6 +172,19 @@ function extractDefaultUsers(userList) {
   return _.map(_.compact((userList).split(',')), _.trim)
 }
 
+/**
+ * 
+ * @returns the date as timestamp, convert the colons to hypens to make the str URL friendly for S3
+ */
+
+function getCurrentTimestamp() {
+  const dt = new Date();
+  const dtString = dt.toISOString();
+
+  const regex = /(\.|\:)/ig;
+  return dtString.replace(regex, "-");
+}
+
 module.exports = {
   wrapExpress,
   autoWrapExpress,
@@ -178,5 +192,6 @@ module.exports = {
   createGroupMembershipUser,
   createGroupMembershipGroup,
   flattenGroupResult,
-  extractDefaultUsers
+  extractDefaultUsers,
+  getCurrentTimestamp
 }

@@ -2,6 +2,9 @@
  * Configure all routes for express app
  */
 const _ = require('lodash')
+const multer = require('multer')
+const upload = multer({ dest: 'uploads/' }).single('memberFileUpload')
+
 const config = require('config')
 const HttpStatus = require('http-status-codes')
 const helper = require('./src/common/helper')
@@ -29,6 +32,7 @@ module.exports = app => {
         next()
       })
 
+
       // add Authenticator check if route has auth
       if (def.auth) {
         actions.push((req, res, next) => {
@@ -38,27 +42,30 @@ module.exports = app => {
             next
           )
         })
-
         actions.push((req, res, next) => {
-            req.authUser.userId = String(req.authUser.userId)
-            // User
-            if (req.authUser.roles) {
-                if (!helper.checkIfExists(def.access, req.authUser.roles)) {
-                next(
-                    new errors.ForbiddenError(
-                    'You are not allowed to perform this action!'
-                    )
-                )
-                } else {
-                    next()
-                }
-            } else {
-                next(
+          req.authUser.userId = String(req.authUser.userId)
+          // User
+          if (req.authUser.roles) {
+            if (!helper.checkIfExists(def.access, req.authUser.roles)) {
+              next(
                 new errors.ForbiddenError(
-                    'You are not authorized to perform this action')
+                  'You are not allowed to perform this action!'
                 )
+              )
+            } else {
+              next()
             }
+          } else {
+            next(
+              new errors.ForbiddenError(
+                'You are not authorized to perform this action')
+            )
+          }
         })
+      }
+
+      if (def.file) {
+        actions.push(upload);
       }
 
       actions.push(method)
