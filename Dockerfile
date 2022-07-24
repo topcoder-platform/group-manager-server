@@ -1,4 +1,4 @@
-FROM node:10.16.0
+FROM node:10.16.3
 LABEL version="1.3"
 LABEL description="Groups Manager Service"
 RUN sed -i '/jessie-updates/d' /etc/apt/sources.list
@@ -20,10 +20,14 @@ RUN apt-get install libpq-dev
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
+COPY package*.json ./
+RUN npm install
+
+
 # Bundle app source
 COPY . /usr/src/app
 # Install app dependencies
-RUN npm install
+# RUN npm install --move this instructions up
 
 EXPOSE 3000
 
