@@ -18,9 +18,9 @@ RUN apt-get install -y \
 RUN apt-get install libpq-dev
 
 # - Install the latest npm version
-npm install -g npm@latest
+RUN npm install -g npm@latest
 
-npm cache clean
+RUN npm cache clean
 
 
 # Create app directory
