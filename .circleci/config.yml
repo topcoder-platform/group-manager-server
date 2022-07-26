@@ -106,7 +106,7 @@ workflows:
             - buildDev_Server
           filters:
             branches:
-              only: ['develop', 'fix/update-docker]
+              only: ['develop', 'fix/update-docker']
                     
       - buildProd_Server:
           context : org-global
