@@ -98,7 +98,7 @@ workflows:
           context : org-global
           filters:
             branches:
-              only: ['develop', 'jira-plat-616']
+              only: ['develop', 'fix/update-docker']
       
       - deployDev_Server:
           context : org-global
@@ -106,7 +106,7 @@ workflows:
             - buildDev_Server
           filters:
             branches:
-              only: ['develop', 'jira-plat-616']
+              only: ['develop', 'fix/update-docker]
                     
       - buildProd_Server:
           context : org-global
