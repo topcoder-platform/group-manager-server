@@ -6,6 +6,8 @@ const errors = require('../common/errors');
 const awsUtils = require('../common/awsUtils');
 
 const service = require('../services/BulkImportService');
+const bulkImportValidationService = require("../services/BulkImportValidationService");
+
 
 /**
  * Get Top 100 Imports
@@ -28,6 +30,11 @@ async function createBulkImport (req, res) {
     
     logger.debug("Uploaded file Details....");
     logger.debug(JSON.stringify(req.file));
+
+    //Validate the file and format
+    await bulkImportValidationService.validateImportFile(req.authUser, req.file.path);
+
+    logger.debug("File Validation successful");
 
     //If the user hasn't provided any name, we use the original file name
     if(!req.body.name) {
