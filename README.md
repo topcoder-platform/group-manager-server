@@ -4,6 +4,7 @@
 
 - NodeJS (v8+)
 - git
+- AWS S3
 
 ## Configuration
 
