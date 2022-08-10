@@ -27,7 +27,8 @@ async function getAllBulkImports() {
 createBulkImport.schema = {
     name: Joi.string().required().max(255),
     location: Joi.string().required().max(2048),
-    userId: Joi.number().integer().required()
+    userId: Joi.number().integer().required(),
+    email: Joi.string().required()
 }
   
 async function createBulkImport(name, location, userId, email) {
