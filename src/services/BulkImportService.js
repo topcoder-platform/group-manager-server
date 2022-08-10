@@ -30,7 +30,7 @@ createBulkImport.schema = {
     userId: Joi.number().integer().required()
 }
   
-async function createBulkImport(name, location, userId) {
+async function createBulkImport(name, location, userId, email) {
     logger.debug(`Bulk Import Service. Insert one Import record`);
     try {
         let importRecord = {};
@@ -39,7 +39,18 @@ async function createBulkImport(name, location, userId) {
         importRecord.file_path = location;
         importRecord.created_by = userId;
         
-        return await db.BulkImport.create(importRecord);
+        await db.BulkImport.create(importRecord);
+        const maxId = await db.BulkImport.getMaxId();
+        logger.info(`Max Id: ${maxId}`);
+        const notificationRecord = {
+            bulk_import_id: maxId[0].max_id,
+            email
+        }
+
+        logger.info(`Notification Record: ${notificationRecord}`);
+        await db.BulkImportNotification.create(notificationRecord);
+
+        return maxId[0].max_id;
     }
     catch (error) {
         logger.error(error)
