@@ -10,6 +10,11 @@ class Import extends Model {
         return await this.insert(this.tblName, values);
     }
 
+    async getMaxId() {
+        let sql = `SELECT MAX(id) AS max_id FROM ${this.schemaName}.${this.tblName}`;
+        return await this.conn.query(sql, {raw: true});
+    }
+
     async getAll(option) {
         let columns = option.columns;
         let orderBy = option.orderBy;

@@ -43,6 +43,7 @@ module.exports = app => {
           )
         })
         actions.push((req, res, next) => {
+          req.authUser.email = String(req.authUser.email)
           req.authUser.userId = String(req.authUser.userId)
           // User
           if (req.authUser.roles) {

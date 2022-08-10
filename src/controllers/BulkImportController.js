@@ -46,10 +46,12 @@ async function createBulkImport (req, res) {
     logger.debug(awsResponse);
 
     logger.debug("Create Record in Group Manager table for processing...");
-    let createImportResponse = await service.createBulkImport(req.body.name, awsResponse.Location, req.authUser.userId);
+    const bulkImportRequestId = await service.createBulkImport(req.body.name, awsResponse.Location, req.authUser.userId, req.authUser.email);
 
     logger.debug('EXIT BulkImportController.createBulkImport');
-    res.send(createImportResponse);
+    res.send({
+        requestId: bulkImportRequestId
+    });
 }
 
 module.exports = {

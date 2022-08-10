@@ -9,6 +9,7 @@ const Connect = require("./Connect");
 const Payment = require("./Payment");
 const Request = require("./Request");
 const BulkImport = require("./BulkImport");
+const BulkImportNotification = require('./BulkImportNotification');
 
 let connConfig = {
   connectionString: config.DB_MASTER_URL
@@ -21,6 +22,7 @@ const connect = new Connect(db, 'connect');
 const payment = new Payment(db, 'payment_adjustment');
 const request = new Request(db, 'request');
 const bulkImportTable = new BulkImport(db, 'bulk_import');
+const bulkImportNotificationTable = new BulkImportNotification(db, 'bulk_import_notification');
 
 
 db.Audit = audit;
@@ -29,5 +31,6 @@ db.Connect = connect;
 db.Payment = payment;
 db.Request = request;
 db.BulkImport = bulkImportTable;
+db.BulkImportNotification = bulkImportNotificationTable;
 
 module.exports = db;
