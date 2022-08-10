@@ -11,7 +11,7 @@ class Import extends Model {
     }
 
     async getMaxId() {
-        let sql = `SELECT MAX(id) AS max_id FROM ${this.tblName}`;
+        let sql = `SELECT MAX(id) AS max_id FROM ${this.schemaName}.${this.tblName}`;
         return await this.conn.query(sql, {raw: true});
     }
 
