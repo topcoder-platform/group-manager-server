@@ -52,7 +52,8 @@ async function loadGroupsAndCache() {
   logger.debug(`ENTER GroupShimController.loadGroupsAndCache`);
   cacheService.flush_Group_Cache();
   let criteria = {
-    includeSubGroups: true
+    includeSubGroups: true,
+    skipCache: true,
   }
 
   //The result is returned as subGroups inside subGroups
