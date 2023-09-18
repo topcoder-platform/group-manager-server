@@ -12,6 +12,13 @@ install_deploysuite: &install_deploysuite
     cp ./../buildscript/master_deploy.sh .
     cp ./../buildscript/buildenv.sh .
     cp ./../buildscript/awsconfiguration.sh .
+    
+install_dependencies: &install_dependencies
+  name: Install Dependencies
+  command: |
+    sudo apt update
+    sudo apt install -y jq python3-pip
+    sudo pip3 install awscli --upgrade    
 
 #######################################################
 #                  Server Build                       #
@@ -40,7 +47,7 @@ deploy_steps_server: &deploy_steps_server
   - checkout
   - attach_workspace:
       at: ./workspace
-  #- run: *install_awscli
+  - run: *install_dependencies
   - run: *install_deploysuite
   - setup_remote_docker
   - run: docker build -t ${APPNAME}:latest .
@@ -74,7 +81,7 @@ jobs:
 
   deployDev_Server:
     docker:
-      - image: cibuilds/aws
+      - image: cimg/python:3.11.0-browsers
     environment:
       DEPLOY_ENV: "DEV"
       LOGICAL_ENV: "dev"
@@ -83,7 +90,7 @@ jobs:
 
   deployProd_Server:
     docker:
-      - image: cibuilds/aws
+      - image: cimg/python:3.11.0-browsers
     environment:
       DEPLOY_ENV: "PROD"
       LOGICAL_ENV: "prod"
