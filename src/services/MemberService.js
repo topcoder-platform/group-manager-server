@@ -14,7 +14,7 @@ async function queryUserByMemberService(field, fieldValue) {
     const httpClient = utils.getHttpClient();
     const criteria = {
         "fields":"userId,handle,email,status,firstName,lastName",
-        dbFieldName: fieldValue
+        [dbFieldName]: fieldValue
     }
     logger.debug(`Field Name = ${dbFieldName}=${fieldValue}`)
     logger.debug(`Initiate Http Call...`);
