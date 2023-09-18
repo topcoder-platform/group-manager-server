@@ -44,7 +44,7 @@ function getHeaderParam(token) {
  * to ensure the downline code works properly
  */
 function standardizeMemberAPIResponse(response) {
-    let content = _.get(response, 'result.content');
+    let content = response;
    
     if (!_.isArray(content)) {
         return empty_response;
@@ -56,7 +56,7 @@ function standardizeMemberAPIResponse(response) {
 
     // Make the response standard as per looker
     return {
-        "user.coder_id": content[0].id,
+        "user.coder_id": content[0].userId,
         "user.email": content[0].email,
         "user.handle": content[0].handle,
         "user.status": content[0].status,

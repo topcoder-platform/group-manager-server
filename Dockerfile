@@ -1,7 +1,10 @@
 FROM node:10.18.0
 LABEL version="1.3"
 LABEL description="Groups Manager Service"
-RUN sed -i '/jessie-updates/d' /etc/apt/sources.list
+# RUN sed -i '/jessie-updates/d' /etc/apt/sources.list
+RUN mv /etc/apt/sources.list /etc/apt/sources.list.bak && \
+    echo "deb http://archive.debian.org/debian/ stretch main non-free contrib" >/etc/apt/sources.list && \
+    echo "deb http://archive.debian.org/debian-security stretch/updates main contrib non-free" >>/etc/apt/sources.list
 
 RUN apt-get update && \
     apt-get upgrade -y

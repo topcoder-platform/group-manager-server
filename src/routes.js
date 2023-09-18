@@ -119,6 +119,7 @@ module.exports = {
         access: [constants.UserRoles.Admin, constants.UserRoles.GroupManager]
       }
     },
+    /*
     '/payment': {
       get: {
         controller: 'PaymentController',
@@ -141,6 +142,7 @@ module.exports = {
         access: [constants.UserRoles.Admin, constants.UserRoles.GroupManager]
       }
     },
+    */
     '/health': {
       get: {
         controller: 'HealthController',

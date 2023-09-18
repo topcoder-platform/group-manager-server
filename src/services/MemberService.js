@@ -6,15 +6,15 @@ const utils = require('../common/utils');
 async function queryUserByMemberService(field, fieldValue) {
 
     logger.debug(`ENTER MemberService.queryUserByMemberService...`);
-    let dbFieldName = (field === "user.coder_id" ? "id": field);
+    let dbFieldName = (field === "user.coder_id" ? "userId": field);
    
     let token = await utils.getM2MToken();
     logger.debug(`M2M Token Successful...`);
     
     const httpClient = utils.getHttpClient();
     const criteria = {
-        "fields":"id,handle,email,status,firstName,LastName",
-        "filter": `${dbFieldName}=${fieldValue}`
+        "fields":"userId,handle,email,status,firstName,lastName",
+        [dbFieldName]: fieldValue
     }
     logger.debug(`Field Name = ${dbFieldName}=${fieldValue}`)
     logger.debug(`Initiate Http Call...`);
